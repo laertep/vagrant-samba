@@ -5,15 +5,13 @@ Vagrant.configure("2") do |config|
       vb.memory = "1024"
    end
    config.vm.network "forwarded_port", guest: 80, host: 8080
-   config.vm.network "public_network", bridge: "Intel(R) Ethernet Connection I217-LM"
-   config.vm.synced_folder "./samba", "/vagrant/samba"
+   config.vm.network "public_network", ip: "172.22.12.203", bridge: "Intel(R) Ethernet Connection I217-LM"
+   config.vm.synced_folder "./samba", "/tmp/samba"
 
-   config.vm.provision "shell", inline: <<-SHELL
+   #config.vm.provision "shell", inline: <<-SHELL
+   
    # Procedimento para instalar pacotes no centos/8
-   sudo cd /etc/yum.repos.d/
-   sudo sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
-   sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
-   sudo yum update -y
-   sudo yum install docker -y
-   SHELL
+   config.vm.provision "shell", path: "script.sh"
+   
+   
 end
